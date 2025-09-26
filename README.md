@@ -1,4 +1,4 @@
-# Flashfits AI - Fashion E-commerce Platform 👗
+# Flashfits AI - Fashion E-commerce Platform 
 
 A modern, AI-powered fashion e-commerce web application built with Next.js, React, and Supabase. Flashfits AI offers a seamless shopping experience with intelligent product recommendations and a sleek, responsive design.
 
@@ -169,17 +169,6 @@ Contributions are welcome! Please follow these steps:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📋 To-Do
-
-- [ ] Add product reviews and ratings
-- [ ] Implement wishlist functionality
-- [ ] Add payment integration (Stripe/PayPal)
-- [ ] Enhance AI recommendations
-- [ ] Add order history
-- [ ] Implement email notifications
-- [ ] Add product search functionality
-- [ ] Mobile app version
-
 ## 🐛 Known Issues
 
 - Image uploads may take time on slower connections
@@ -189,23 +178,6 @@ Contributions are welcome! Please follow these steps:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👨‍💻 Author
-
-**Tanishq Shelar** - [@itanishqshelar](https://github.com/itanishqshelar)
-
-## 🙏 Acknowledgments
-
-- [Next.js](https://nextjs.org/) for the amazing React framework
-- [Supabase](https://supabase.com/) for the backend services
-- [Tailwind CSS](https://tailwindcss.com/) for the styling system
-- [Radix UI](https://www.radix-ui.com/) for accessible components
-- [Vercel](https://vercel.com/) for hosting and deployment
-
-## 🔗 Links
-
-- [Live Demo](https://flashfits-ai.vercel.app) (Replace with your actual deployment URL)
-- [Project Repository](https://github.com/itanishqshelar/Flashfits-AI)
-- [Bug Reports](https://github.com/itanishqshelar/Flashfits-AI/issues)
 
 ---
 
