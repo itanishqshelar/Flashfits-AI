@@ -1,10 +1,12 @@
 "use client"
 
+import { useState } from "react"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { AiChatbot } from "@/components/ai-chatbot"
 import { Canvas } from "@react-three/fiber"
 import { OrbitControls, Sphere, MeshDistortMaterial, Environment, Float } from "@react-three/drei"
 import { Brain, Sparkles, Zap, Target, Palette, TrendingUp } from "lucide-react"
@@ -33,6 +35,12 @@ function Scene() {
 }
 
 export default function FlashfitsAI() {
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false)
+
+  const handleTryAIStyling = () => {
+    setIsChatbotOpen(true)
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
       <Navigation />
@@ -69,6 +77,7 @@ export default function FlashfitsAI() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Button
+                onClick={handleTryAIStyling}
                 size="lg"
                 className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white px-8 py-4 text-lg"
               >
@@ -159,6 +168,7 @@ export default function FlashfitsAI() {
             Join thousands of fashion-forward individuals who trust Flashfits AI to elevate their personal style.
           </p>
           <Button
+            onClick={handleTryAIStyling}
             size="lg"
             className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white px-12 py-4 text-lg"
           >
@@ -169,6 +179,9 @@ export default function FlashfitsAI() {
       </section>
 
       <Footer />
+      
+      {/* AI Chatbot */}
+      <AiChatbot isOpen={isChatbotOpen} onClose={() => setIsChatbotOpen(false)} />
     </div>
   )
 }

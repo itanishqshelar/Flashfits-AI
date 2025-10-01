@@ -7,7 +7,9 @@ A modern, AI-powered fashion e-commerce web application built with Next.js, Reac
 ## 🌟 Features
 
 - **Modern E-commerce Experience**: Browse and shop fashion items with an intuitive interface
-- **AI-Powered Recommendations**: Smart product suggestions based on user preferences
+- **AI-Powered Fashion Chatbot**: Interactive styling assistant using Google Gemini AI
+- **Product-Aware AI**: Chatbot has access to your product catalog for personalized recommendations
+- **Smart Style Recommendations**: AI-driven product suggestions based on user preferences
 - **Admin Dashboard**: Easy product management with CRUD operations
 - **User Authentication**: Secure login/logout functionality via Supabase Auth
 - **Shopping Cart**: Add, remove, and manage items in your cart
@@ -21,8 +23,9 @@ A modern, AI-powered fashion e-commerce web application built with Next.js, Reac
 - **Frontend**: Next.js 14, React 18, TypeScript
 - **Styling**: Tailwind CSS, Radix UI Components
 - **Backend**: Supabase (Database, Auth, Storage)
+- **AI Integration**: Google Gemini AI for fashion styling assistance
 - **State Management**: React Context API
-- **Package Manager**: pnpm
+- **Package Manager**: npm
 - **Deployment**: Vercel (recommended)
 
 ## 📋 Prerequisites
@@ -45,7 +48,7 @@ cd Flashfits-AI
 ### 2. Install dependencies
 
 ```bash
-pnpm install
+npm install
 ```
 
 ### 3. Set up environment variables
@@ -56,11 +59,18 @@ pnpm install
    cp .env.example .env.local
    ```
 
-2. Update `.env.local` with your Supabase credentials:
+2. Update `.env.local` with your credentials:
+
    ```env
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   GEMINI_API_KEY=your_gemini_api_key
    ```
+
+3. **Get your Gemini API Key**:
+   - Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+   - Create a new API key
+   - Add it to your `.env.local` file
 
 ### 4. Set up Supabase Database
 
@@ -76,7 +86,7 @@ pnpm install
 ### 6. Run the development server
 
 ```bash
-pnpm dev
+npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
@@ -104,10 +114,11 @@ flashfits-fashion-webapp/
 
 ## 🔑 Environment Variables
 
-| Variable                        | Description                 |
-| ------------------------------- | --------------------------- |
-| `NEXT_PUBLIC_SUPABASE_URL`      | Your Supabase project URL   |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anonymous key |
+| Variable                        | Description                   |
+| ------------------------------- | ----------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`      | Your Supabase project URL     |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anonymous key   |
+| `GEMINI_API_KEY`                | Your Google Gemini AI API key |
 
 ## 📱 Pages Overview
 
@@ -120,6 +131,14 @@ flashfits-fashion-webapp/
 - **Admin** (`/admin/add-product`): Product management (admin only)
 
 ## 🛒 Key Features
+
+### AI Fashion Chatbot
+
+- Interactive styling assistant powered by Google Gemini AI
+- Access to your complete product catalog
+- Personalized outfit recommendations
+- Fashion advice and styling tips
+- Natural conversation interface
 
 ### Product Management
 
@@ -178,6 +197,26 @@ Contributions are welcome! Please follow these steps:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+<<<<<<< HEAD
+=======
+## 👨‍💻 Author
+
+**Tanishq Shelar** - [@itanishqshelar](https://github.com/itanishqshelar)
+
+## 🙏 Acknowledgments
+
+- [Next.js](https://nextjs.org/) for the amazing React framework
+- [Supabase](https://supabase.com/) for the backend services
+- [Tailwind CSS](https://tailwindcss.com/) for the styling system
+- [Radix UI](https://www.radix-ui.com/) for accessible components
+- [Vercel](https://vercel.com/) for hosting and deployment
+
+## 🔗 Links
+
+- [Live Demo](https://flashfits-ai.vercel.app)
+- [Project Repository](https://github.com/itanishqshelar/Flashfits-AI)
+- [Bug Reports](https://github.com/itanishqshelar/Flashfits-AI/issues)
+>>>>>>> a5278ed (feat: Add AI Fashion Chatbot with Gemini API integration)
 
 ---
 
