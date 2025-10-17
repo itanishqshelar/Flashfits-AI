@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -8,6 +9,7 @@ import { resolveColor } from "@/lib/utils"
 
 interface Product {
   id: number
+  dbId?: string
   name: string
   price: number
   originalPrice?: number
@@ -68,16 +70,18 @@ export function ProductCard({ product, onAddToCart, onToggleWishlist }: ProductC
 
       <CardContent className="p-4">
         <div className="mb-2">
-          <h3 className="font-sans font-semibold text-foreground group-hover:text-primary transition-colors">
-            {product.name}
-          </h3>
+          <Link href={`/product/${product.dbId || product.id}`}>
+            <h3 className="font-sans font-semibold text-foreground group-hover:text-primary transition-colors cursor-pointer hover:underline">
+              {product.name}
+            </h3>
+          </Link>
           <p className="font-serif text-sm text-muted-foreground">{product.category}</p>
         </div>
 
         <div className="flex items-center gap-2 mb-3">
-          <span className="font-sans font-bold text-lg text-foreground">${product.price}</span>
+          <span className="font-sans font-bold text-lg text-foreground">₹{product.price.toFixed(0)}</span>
           {product.originalPrice && (
-            <span className="font-serif text-sm text-muted-foreground line-through">${product.originalPrice}</span>
+            <span className="font-serif text-sm text-muted-foreground line-through">₹{product.originalPrice.toFixed(0)}</span>
           )}
         </div>
 

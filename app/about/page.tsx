@@ -72,14 +72,11 @@ export default function AboutPage() {
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="font-sans font-bold text-3xl md:text-4xl text-foreground mb-6">Our Story</h2>
             <p className="font-serif text-lg text-muted-foreground mb-6">
-              Founded in 2024, Flashfits emerged from a simple observation: finding the perfect outfit shouldn't be
-              overwhelming. Our team of fashion experts, data scientists, and AI engineers came together with a shared
-              vision of making personalized fashion recommendations as natural as having a conversation with your most
-              stylish friend.
-            </p>
-            <p className="font-serif text-lg text-muted-foreground">
-              Today, we're proud to serve thousands of fashion enthusiasts worldwide, helping them discover their unique
-              style through the power of artificial intelligence and human creativity.
+              FlashFits is a smart fashion recommendation app powered by an intelligent algorithm designed to make outfit choices effortless. Built as my semester mini project, FlashFits combines data, design, and a bit of style magic to suggest looks that perfectly match your vibe.
+
+Whether you’re dressing for a casual hangout or a big event, FlashFits curates personalized outfit ideas based on your preferences and the latest trends so you never have to ask, “What should I wear?” again.
+
+With its sleek interface and algorithm-driven recommendations, FlashFits brings fashion and technology together to help you find your fit, faster.
             </p>
           </div>
         </div>

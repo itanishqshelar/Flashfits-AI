@@ -7,6 +7,7 @@ import { Sparkles, TrendingUp, User } from "lucide-react"
 import Link from "next/link"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
+import { AiChatbot } from "@/components/ai-chatbot"
 import { useEffect, useRef, useState } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
 import { Sphere, Float, Environment } from "@react-three/drei"
@@ -44,6 +45,9 @@ function Scene3D() {
       <FloatingSphere position={[4, -1, -2]} color="#84cc16" size={0.6} />
       <FloatingSphere position={[2, 3, -1]} color="#f59e0b" size={0.4} />
       <FloatingSphere position={[-2, -2, 1]} color="#ec4899" size={0.5} />
+      <FloatingSphere position={[0, 0, -3]} color="#8b5cf6" size={0.7} />
+      <FloatingSphere position={[-3, -3, 2]} color="#10b981" size={0.3} />
+      <FloatingSphere position={[3, 1, 1]} color="#f97316" size={0.5} />
       <Environment preset="city" />
     </Canvas>
   )
@@ -66,6 +70,13 @@ export default function HomePage() {
   const heroRef = useRef<HTMLDivElement>(null)
   const featuresRef = useRef<HTMLDivElement>(null)
   const collectionsRef = useRef<HTMLDivElement>(null)
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false)
+  const [initialMessage, setInitialMessage] = useState('')
+
+  const handleStyleQuiz = () => {
+    setInitialMessage('Take Style quiz')
+    setIsChatbotOpen(true)
+  }
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -126,7 +137,7 @@ export default function HomePage() {
             </Badge>
             <h1 className="font-sans font-bold text-4xl md:text-6xl lg:text-7xl text-foreground mb-6">
               Your Style,
-              <span className="text-primary block bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Perfectly Curated
               </span>
             </h1>
@@ -136,69 +147,197 @@ export default function HomePage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/shop">
-                <Button size="lg" className="font-serif transform hover:scale-105 transition-transform duration-200">
+                <Button size="lg" className="font-serif transform hover:scale-105 transition-all duration-200 hover:shadow-2xl hover:animate-glow bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80">
                   Start Shopping
                 </Button>
               </Link>
               <Button
                 variant="outline"
                 size="lg"
-                className="font-serif bg-transparent transform hover:scale-105 transition-transform duration-200"
+                className="font-serif bg-transparent transform hover:scale-105 transition-all duration-200 hover:shadow-lg hover:border-primary hover:text-primary hover:animate-shimmer"
+                onClick={handleStyleQuiz}
               >
                 Take Style Quiz
               </Button>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div ref={collectionsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-accent/10 via-primary/5 to-secondary/10">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
+            <h2 className="font-sans font-bold text-3xl md:text-4xl text-foreground mb-4">Featured Looks</h2>
+            <p className="font-serif text-lg text-muted-foreground max-w-2xl mx-auto">
+              Inspired by the latest trends from Zara. Discover styles that blend elegance and modernity.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div
+              className="relative overflow-hidden rounded-2xl shadow-2xl transform transition-all duration-500 hover:scale-105 scroll-animate opacity-0 translate-y-8"
+              style={{
+                transform: `rotate(${scrollY * 0.02}deg) scale(${1 + Math.sin(scrollY * 0.001) * 0.05}) translateY(${scrollY * 0.1}px)`,
+                animationDelay: "0ms",
+              }}
+            >
+              <img
+                src="/zara1.jpg"
+                alt="Zara Inspired Look 1"
+                className="w-full h-auto object-cover transition-transform duration-700 hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute bottom-4 left-4 text-white opacity-0 hover:opacity-100 transition-opacity duration-300">
+                <h3 className="font-sans font-bold text-xl mb-1">Elegant Minimalism</h3>
+                <p className="font-serif text-sm">Timeless pieces with a modern twist</p>
+              </div>
+            </div>
+            <div
+              className="relative overflow-hidden rounded-2xl shadow-2xl transform transition-all duration-500 hover:scale-105 scroll-animate opacity-0 translate-y-8"
+              style={{
+                transform: `rotate(${-scrollY * 0.02}deg) scale(${1 + Math.sin(scrollY * 0.001 + Math.PI) * 0.05}) translateY(${scrollY * 0.15}px)`,
+                animationDelay: "200ms",
+              }}
+            >
+              <img
+                src="/zara2.jpg"
+                alt="Zara Inspired Look 2"
+                className="w-full h-auto object-cover transition-transform duration-700 hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute bottom-4 left-4 text-white opacity-0 hover:opacity-100 transition-opacity duration-300">
+                <h3 className="font-sans font-bold text-xl mb-1">Urban Chic</h3>
+                <p className="font-serif text-sm">Bold statements for the city streets</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-black">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-8 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
+            <h2 className="font-sans font-bold text-3xl md:text-4xl text-white mb-4">Spring-Summer 2026 Show</h2>
+            <p className="font-serif text-lg text-gray-300 max-w-2xl mx-auto">
+              Experience the future of fashion with our exclusive runway preview.
+            </p>
+          </div>
+          <div className="relative rounded-2xl overflow-hidden shadow-2xl scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out" style={{ animationDelay: "200ms" }}>
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-auto max-h-[70vh] object-cover"
+              poster="/placeholder.svg"
+            >
+              <source src="/diordemo.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
+            <h2 className="font-sans font-bold text-3xl md:text-4xl text-foreground mb-4">What Our Users Say</h2>
+            <p className="font-serif text-lg text-muted-foreground max-w-2xl mx-auto">
+              Hear from fashion enthusiasts who've transformed their style with Flashfits.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                src: "/elegant-woman-in-minimalist-fashion-outfit.png",
-                alt: "Minimalist Collection",
-                title: "Minimalist",
-                desc: "Clean lines, timeless pieces",
+                quote: "Flashfits completely changed how I shop. The AI recommendations are spot-on!",
+                author: "Sarah M.",
+                role: "Fashion Blogger",
                 delay: "0ms",
               },
               {
-                src: "/trendy-streetwear-fashion-collection.png",
-                alt: "Streetwear Collection",
-                title: "Streetwear",
-                desc: "Urban edge, bold statements",
+                quote: "I discovered styles I never thought I'd love. It's like having a personal stylist.",
+                author: "Alex K.",
+                role: "Creative Director",
                 delay: "200ms",
               },
               {
-                src: "/elegant-formal-business-attire-collection.png",
-                alt: "Formal Collection",
-                title: "Formal",
-                desc: "Professional elegance",
+                quote: "The trend insights keep me ahead of the curve. Highly recommend!",
+                author: "Jordan L.",
+                role: "Marketing Exec",
                 delay: "400ms",
               },
-            ].map((item, index) => (
+            ].map((testimonial, index) => (
               <Card
                 key={index}
-                className="group cursor-pointer overflow-hidden scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out transform hover:scale-105 hover:shadow-2xl"
-                style={{
-                  animationDelay: item.delay,
-                  transform: `translateY(${scrollY * 0.05 * (index + 1)}px) scale(${1 + Math.sin(scrollY * 0.01 + index) * 0.02})`,
-                }}
+                className="p-6 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out hover:scale-105 hover:shadow-xl bg-white/50 backdrop-blur-sm"
+                style={{ animationDelay: testimonial.delay }}
               >
-                <div className="aspect-[4/5] bg-muted relative">
-                  <img
-                    src={item.src || "/placeholder.svg"}
-                    alt={item.alt}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent group-hover:from-black/40 transition-all duration-300" />
-                  <div className="absolute bottom-4 left-4 text-white transform group-hover:translate-y-[-4px] transition-transform duration-300">
-                    <h3 className="font-sans font-bold text-xl mb-1">{item.title}</h3>
-                    <p className="font-serif text-sm opacity-90">{item.desc}</p>
+                <CardContent className="pt-0">
+                  <div className="mb-4">
+                    <Sparkles className="h-8 w-8 text-primary mb-2" />
+                    <p className="font-serif italic text-muted-foreground">"{testimonial.quote}"</p>
                   </div>
-                </div>
+                  <div className="flex items-center">
+                    <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white font-bold mr-3">
+                      {testimonial.author[0]}
+                    </div>
+                    <div>
+                      <p className="font-sans font-bold">{testimonial.author}</p>
+                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                    </div>
+                  </div>
+                </CardContent>
               </Card>
             ))}
           </div>
         </div>
       </section>
+
+      {/* Creative Style Inspiration Section */}
+      <div className="py-16 px-4 sm:px-6 lg:px-8 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="font-sans font-bold text-3xl md:text-4xl text-foreground mb-4">Style Inspiration</h2>
+            <p className="font-serif text-lg text-muted-foreground max-w-2xl mx-auto">
+              Let AI curate your perfect look from millions of possibilities. Discover trends that match your vibe.
+            </p>
+          </div>
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+              <div className="space-y-6">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
+                    <Sparkles className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-sans font-bold text-xl">AI-Powered Curation</h3>
+                    <p className="text-muted-foreground">Personalized recommendations based on your preferences</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-secondary/20 rounded-full flex items-center justify-center">
+                    <TrendingUp className="h-6 w-6 text-secondary" />
+                  </div>
+                  <div>
+                    <h3 className="font-sans font-bold text-xl">Trend Forecasting</h3>
+                    <p className="text-muted-foreground">Stay ahead with cutting-edge fashion insights</p>
+                  </div>
+                </div>
+              </div>
+              <div className="relative">
+                <div className="aspect-square bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full flex items-center justify-center overflow-hidden">
+                  <div className="w-3/4 h-3/4 bg-gradient-to-br from-accent/30 to-primary/30 rounded-full animate-pulse"></div>
+                  <div className="absolute inset-4 bg-gradient-to-br from-secondary/40 to-accent/40 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+                  <div className="absolute inset-8 bg-gradient-to-br from-primary/50 to-secondary/50 rounded-full animate-pulse" style={{ animationDelay: '2s' }}></div>
+                </div>
+                <div className="absolute -top-4 -right-4 w-8 h-8 bg-primary rounded-full animate-bounce"></div>
+                <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '0.5s' }}></div>
+                <div className="absolute top-1/2 -left-6 w-4 h-4 bg-accent rounded-full animate-bounce" style={{ animationDelay: '1s' }}></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30 relative overflow-hidden">
         {/* Animated background elements */}
@@ -247,17 +386,17 @@ export default function HomePage() {
             ].map((feature, index) => (
               <Card
                 key={index}
-                className="text-center p-6 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out transform hover:scale-105 hover:shadow-lg group"
+                className="text-center p-6 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out transform hover:scale-105 hover:shadow-2xl hover:bg-gradient-to-br hover:from-primary/5 hover:to-secondary/5 group border-2 border-transparent hover:border-primary/20"
                 style={{ animationDelay: feature.delay }}
               >
                 <CardContent className="pt-6">
                   <div
-                    className={`w-12 h-12 bg-${feature.color}/10 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}
+                    className={`w-12 h-12 bg-${feature.color}/10 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:bg-${feature.color}/20 transition-all duration-300 group-hover:shadow-lg`}
                   >
-                    <feature.icon className={`h-6 w-6 text-${feature.color}`} />
+                    <feature.icon className={`h-6 w-6 text-${feature.color} group-hover:animate-pulse`} />
                   </div>
-                  <h3 className="font-sans font-bold text-xl mb-2">{feature.title}</h3>
-                  <p className="font-serif text-muted-foreground">{feature.desc}</p>
+                  <h3 className="font-sans font-bold text-xl mb-2 group-hover:text-primary transition-colors duration-300">{feature.title}</h3>
+                  <p className="font-serif text-muted-foreground group-hover:text-foreground transition-colors duration-300">{feature.desc}</p>
                 </CardContent>
               </Card>
             ))}
@@ -306,7 +445,34 @@ export default function HomePage() {
           0%, 100% { opacity: 0.3; transform: scale(1); }
           50% { opacity: 0.6; transform: scale(1.1); }
         }
+
+        @keyframes glow {
+          0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+          50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.8); }
+        }
+
+        .animate-glow {
+          animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+
+        .animate-shimmer {
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+          background-size: 200% 100%;
+          animation: shimmer 2s infinite;
+        }
       `}</style>
+
+      {/* AI Chatbot */}
+      <AiChatbot 
+        isOpen={isChatbotOpen} 
+        onClose={() => setIsChatbotOpen(false)}
+        initialMessage={initialMessage}
+      />
     </div>
   )
 }

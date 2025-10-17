@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -8,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Search, Filter, Heart, ShoppingBag } from "lucide-react"
+import Link from "next/link"
 import { useCart } from "@/contexts/cart-context"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
@@ -91,9 +93,9 @@ function QuickAddDialog({ product, onAddToCart }: QuickAddDialogProps) {
           </div>
 
           <div className="flex items-center gap-2 pt-2">
-            <span className="font-sans font-bold text-lg">${product.price}</span>
+            <span className="font-sans font-bold text-lg">₹{product.price.toFixed(0)}</span>
             {product.originalPrice && (
-              <span className="font-serif text-sm text-muted-foreground line-through">${product.originalPrice}</span>
+              <span className="font-serif text-sm text-muted-foreground line-through">₹{product.originalPrice.toFixed(0)}</span>
             )}
           </div>
 
@@ -108,6 +110,9 @@ function QuickAddDialog({ product, onAddToCart }: QuickAddDialogProps) {
 }
 
 export default function ShopPage() {
+  const searchParams = useSearchParams()
+  const highlightProductId = searchParams.get('product')
+  
   const [products, setProducts] = useState<UIProduct[]>([])
   const [offset, setOffset] = useState(0)
   const [hasMore, setHasMore] = useState(true)
@@ -212,6 +217,7 @@ export default function ShopPage() {
               <SelectItem value="formal">Formal</SelectItem>
               <SelectItem value="casual">Casual</SelectItem>
               <SelectItem value="streetwear">Streetwear</SelectItem>
+              <SelectItem value="luxury">Luxury</SelectItem>
             </SelectContent>
           </Select>
 
@@ -229,83 +235,82 @@ export default function ShopPage() {
         </div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {sortedProducts.map((product) => (
-            <Card key={product.id} className="group cursor-pointer overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="relative aspect-[3/4] bg-muted">
-                <img
-                  src={product.image || "/placeholder.svg"}
-                  alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {sortedProducts.map((product) => {
+            const isHighlighted = highlightProductId && product.dbId === highlightProductId
+            return (
+              <Card
+                key={product.id}
+                className={`group cursor-pointer overflow-hidden hover:shadow-xl transition-all duration-300 h-full flex flex-col ${
+                  isHighlighted ? 'ring-2 ring-primary shadow-lg scale-105' : ''
+                }`}
+              >
+                <div className="relative aspect-[4/5] bg-muted overflow-hidden">
+                  <img
+                    src={product.image || "/placeholder.svg"}
+                    alt={product.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
 
-                {/* Badges */}
-                <div className="absolute top-3 left-3 flex flex-col gap-2">
-                  {product.isNew && (
-                    <Badge variant="secondary" className="text-xs">
-                      New
-                    </Badge>
-                  )}
-                  {product.isSale && <Badge className="bg-destructive text-destructive-foreground text-xs">Sale</Badge>}
-                </div>
+                  {/* Badges */}
+                  <div className="absolute top-2 left-2 flex flex-col gap-1">
+                    {isHighlighted && (
+                      <Badge className="bg-primary text-primary-foreground text-xs animate-pulse">
+                        AI Recommended
+                      </Badge>
+                    )}
+                    {product.isNew && (
+                      <Badge variant="secondary" className="text-xs">
+                        New
+                      </Badge>
+                    )}
+                    {product.isSale && <Badge className="bg-destructive text-destructive-foreground text-xs">Sale</Badge>}
+                  </div>
 
                 {/* Wishlist Button */}
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="absolute top-3 right-3 bg-background/80 hover:bg-background opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute top-2 right-2 bg-background/80 hover:bg-background opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8"
                 >
-                  <Heart className="h-4 w-4" />
+                  <Heart className="h-3 w-3" />
                 </Button>
 
                 {/* Quick Add Button */}
-                <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute bottom-2 left-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <QuickAddDialog product={product} onAddToCart={addToCart} />
                 </div>
               </div>
 
-              <CardContent className="p-4">
+              <CardContent className="p-3 flex-1 flex flex-col justify-between">
                 <div className="mb-2">
-                  <h3 className="font-sans font-semibold text-foreground group-hover:text-primary transition-colors">
-                    {product.name}
-                  </h3>
-                  <p className="font-serif text-sm text-muted-foreground">{product.category}</p>
+                  <Link href={`/shop/${product.dbId || product.id}`}>
+                    <h3 className="font-sans font-semibold text-sm text-foreground group-hover:text-primary transition-colors cursor-pointer hover:underline line-clamp-2 leading-tight">
+                      {product.name}
+                    </h3>
+                  </Link>
+                  <p className="font-serif text-xs text-muted-foreground capitalize">{product.category}</p>
                 </div>
 
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="font-sans font-bold text-lg text-foreground">${product.price}</span>
-                  {product.originalPrice && (
-                    <span className="font-serif text-sm text-muted-foreground line-through">
-                      ${product.originalPrice}
-                    </span>
-                  )}
-                </div>
-
-                {/* Color Options */}
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="font-serif text-xs text-muted-foreground">Colors:</span>
-                  <div className="flex gap-1">
-                    {product.colors?.slice(0, 3).map((color, index) => (
-                      <div
-                        key={index}
-                        className="w-4 h-4 rounded-full border border-border"
-                        style={{ backgroundColor: resolveColor(color) }}
-                      />
-                    ))}
-                    {product.colors?.length > 3 && (
-                      <span className="font-serif text-xs text-muted-foreground">+{product.colors.length - 3}</span>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1">
+                    <span className="font-sans font-bold text-base text-foreground">₹{product.price.toFixed(0)}</span>
+                    {product.originalPrice && (
+                      <span className="font-serif text-xs text-muted-foreground line-through">
+                        ₹{product.originalPrice.toFixed(0)}
+                      </span>
                     )}
                   </div>
-                </div>
-
-                {/* Size Options */}
-                <div className="flex items-center gap-2">
-                  <span className="font-serif text-xs text-muted-foreground">Sizes:</span>
-                  <span className="font-serif text-xs text-foreground">{product.sizes.join(", ")}</span>
+                  {product.isSale && product.originalPrice && (
+                    <Badge variant="outline" className="text-xs text-destructive border-destructive">
+                      -{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
+                    </Badge>
+                  )}
                 </div>
               </CardContent>
             </Card>
-          ))}
+          )
+          })}
         </div>
 
         {/* No Results */}

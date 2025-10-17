@@ -14,6 +14,9 @@ export default function AddProductPage() {
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState<number | ''>('')
   const [imageFile, setImageFile] = useState<File | null>(null)
+  const [colors, setColors] = useState('')
+  const [sizes, setSizes] = useState('')
+  const [category, setCategory] = useState('')
   const [status, setStatus] = useState<string | null>(null)
   const [products, setProducts] = useState<any[]>([])
   const [loadingProducts, setLoadingProducts] = useState(false)
@@ -38,13 +41,11 @@ export default function AddProductPage() {
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/(^-|-$)+/g, '')
-        .slice(0, 60)
-      const ext = dot > -1 ? orig.slice(dot + 1).toLowerCase() : 'jpg'
-      const rand = Math.random().toString(36).slice(2, 8)
+      const ext = dot > 0 ? orig.slice(dot + 1) : 'jpg'
+      const rand = Math.floor(Math.random() * 1000)
       const path = `${user.id}/${Date.now()}-${rand}-${base}.${ext}`
-      const { error: upErr } = await supabase.storage
-        .from('products')
-        .upload(path, imageFile, { upsert: false, contentType: imageFile.type || undefined, cacheControl: '3600' })
+
+      const { error: upErr } = await supabase.storage.from('products').upload(path, imageFile)
       if (upErr) {
         setStatus(`Upload failed: ${upErr.message}`)
         return
@@ -63,15 +64,30 @@ export default function AddProductPage() {
       return
     }
 
+    // Parse colors and sizes from comma-separated strings
+    const colorsArray = colors.split(',').map(c => c.trim()).filter(c => c.length > 0)
+    const sizesArray = sizes.split(',').map(s => s.trim()).filter(s => s.length > 0)
+
     const { error: insErr } = await supabase
       .from('products')
-      .insert({ name, description, price_cents, image_url })
+      .insert({ 
+        name, 
+        description, 
+        price_cents, 
+        image_url, 
+        category: category || 'General',
+        colors: colorsArray,
+        sizes: sizesArray
+      })
     if (insErr) setStatus(`Insert failed: ${insErr.message}`)
     else {
       setStatus('Product added!')
       setName('')
       setDescription('')
       setPrice('')
+      setColors('')
+      setSizes('')
+      setCategory('')
       setImageFile(null)
       // refresh list after adding
       fetchProducts()
@@ -135,15 +151,39 @@ export default function AddProductPage() {
               />
             </div>
             <div>
-              <label className="font-serif text-sm text-muted-foreground">Price (USD)</label>
+              <label className="font-serif text-sm text-muted-foreground">Price (INR)</label>
               <Input
                 type="number"
                 inputMode="decimal"
                 min={0}
-                step={0.01}
+                step={1}
                 value={price}
                 onChange={(e) => setPrice(e.target.value === '' ? '' : Number(e.target.value))}
-                placeholder="e.g. 19.99"
+                placeholder="e.g. 1999"
+              />
+            </div>
+            <div>
+              <label className="font-serif text-sm text-muted-foreground">Category</label>
+              <Input
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                placeholder="e.g. Formal, Casual, Streetwear"
+              />
+            </div>
+            <div>
+              <label className="font-serif text-sm text-muted-foreground">Colors (comma-separated)</label>
+              <Input
+                value={colors}
+                onChange={(e) => setColors(e.target.value)}
+                placeholder="e.g. Red, Blue, Black, White"
+              />
+            </div>
+            <div>
+              <label className="font-serif text-sm text-muted-foreground">Sizes (comma-separated)</label>
+              <Input
+                value={sizes}
+                onChange={(e) => setSizes(e.target.value)}
+                placeholder="e.g. XS, S, M, L, XL"
               />
             </div>
             <div>

@@ -25,8 +25,8 @@ export default function CartPage() {
     dispatch({ type: "CLEAR_CART" })
   }
 
-  const shippingCost = state.total > 100 ? 0 : 9.99
-  const tax = state.total * 0.08
+  const shippingCost = state.total > 2000 ? 0 : 199
+  const tax = state.total * 0.18
   const finalTotal = state.total + shippingCost + tax
 
   return (
@@ -119,10 +119,10 @@ export default function CartPage() {
 
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <span className="font-sans font-bold text-lg text-foreground">${item.price}</span>
+                            <span className="font-sans font-bold text-lg text-foreground">₹{item.price.toFixed(0)}</span>
                             {item.originalPrice && (
                               <span className="font-serif text-sm text-muted-foreground line-through">
-                                ${item.originalPrice}
+                                ₹{item.originalPrice.toFixed(0)}
                               </span>
                             )}
                           </div>
@@ -164,17 +164,17 @@ export default function CartPage() {
                   <div className="space-y-3 mb-4">
                     <div className="flex justify-between">
                       <span className="font-serif text-muted-foreground">Subtotal</span>
-                      <span className="font-sans font-medium">${state.total.toFixed(2)}</span>
+                      <span className="font-sans font-medium">₹{state.total.toFixed(0)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="font-serif text-muted-foreground">Shipping</span>
                       <span className="font-sans font-medium">
-                        {shippingCost === 0 ? "Free" : `$${shippingCost.toFixed(2)}`}
+                        {shippingCost === 0 ? "Free" : `₹${shippingCost.toFixed(0)}`}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="font-serif text-muted-foreground">Tax</span>
-                      <span className="font-sans font-medium">${tax.toFixed(2)}</span>
+                      <span className="font-serif text-muted-foreground">Tax (GST 18%)</span>
+                      <span className="font-sans font-medium">₹{tax.toFixed(0)}</span>
                     </div>
                   </div>
 
@@ -182,13 +182,13 @@ export default function CartPage() {
 
                   <div className="flex justify-between mb-6">
                     <span className="font-sans font-semibold text-lg">Total</span>
-                    <span className="font-sans font-bold text-lg">${finalTotal.toFixed(2)}</span>
+                    <span className="font-sans font-bold text-lg">₹{finalTotal.toFixed(0)}</span>
                   </div>
 
-                  {state.total < 100 && (
+                  {state.total < 2000 && (
                     <div className="bg-secondary/10 border border-secondary/20 rounded-lg p-3 mb-4">
                       <p className="font-serif text-sm text-secondary-foreground">
-                        Add ${(100 - state.total).toFixed(2)} more for free shipping!
+                        Add ₹{(2000 - state.total).toFixed(0)} more for free shipping!
                       </p>
                     </div>
                   )}
