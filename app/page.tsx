@@ -9,51 +9,13 @@ import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { AiChatbot } from "@/components/ai-chatbot"
 import { useEffect, useRef, useState } from "react"
+import dynamic from "next/dynamic"
 
-function FloatingElement({
-  className,
-  children,
-  delay = 0,
-}: {
-  className?: string
-  children: React.ReactNode
-  delay?: number
-}) {
-  return (
-    <div
-      className={`absolute animate-bounce ${className}`}
-      style={{
-        animationDelay: `${delay}s`,
-        animationDuration: '3s',
-        animationIterationCount: 'infinite',
-      }}
-    >
-      {children}
-    </div>
-  )
-}
-
-function AnimatedBackground() {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      <FloatingElement className="top-1/4 left-1/4" delay={0}>
-        <div className="w-12 h-12 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full opacity-20" />
-      </FloatingElement>
-      <FloatingElement className="top-1/3 right-1/4" delay={0.5}>
-        <div className="w-8 h-8 bg-gradient-to-br from-lime-400 to-green-500 rounded-full opacity-20" />
-      </FloatingElement>
-      <FloatingElement className="top-1/2 left-1/3" delay={1}>
-        <div className="w-6 h-6 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full opacity-20" />
-      </FloatingElement>
-      <FloatingElement className="bottom-1/3 right-1/3" delay={1.5}>
-        <div className="w-10 h-10 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full opacity-20" />
-      </FloatingElement>
-      <FloatingElement className="bottom-1/4 left-1/2" delay={2}>
-        <div className="w-14 h-14 bg-gradient-to-br from-purple-400 to-violet-500 rounded-full opacity-20" />
-      </FloatingElement>
-    </div>
-  )
-}
+// Dynamically import the entire Scene3D component to avoid SSR issues
+const Scene3D = dynamic(() => import("./Scene3D").then(mod => ({ default: mod.Scene3D })), { 
+  ssr: false,
+  loading: () => <div className="w-full h-full bg-gradient-to-br from-primary/5 to-secondary/5 animate-pulse" />
+})
 
 function useScrollAnimation() {
   const [scrollY, setScrollY] = useState(0)
@@ -121,9 +83,9 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 dark:from-primary/20 dark:via-secondary/10 dark:to-accent/20"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/40"></div>
 
-        {/* Animated Background */}
-        <div className="absolute inset-0 opacity-30">
-          <AnimatedBackground />
+        {/* 3D Background */}
+        <div className="absolute inset-0 opacity-20">
+          <Scene3D />
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
@@ -473,7 +435,6 @@ export default function HomePage() {
       <AiChatbot 
         isOpen={isChatbotOpen} 
         onClose={() => setIsChatbotOpen(false)}
-        initialMessage={initialMessage}
       />
     </div>
   )
