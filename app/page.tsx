@@ -9,47 +9,49 @@ import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { AiChatbot } from "@/components/ai-chatbot"
 import { useEffect, useRef, useState } from "react"
-import { Canvas, useFrame } from "@react-three/fiber"
-import { Sphere, Float, Environment } from "@react-three/drei"
-import type * as THREE from "three"
 
-function FloatingSphere({
-  position,
-  color,
-  size = 1,
-}: { position: [number, number, number]; color: string; size?: number }) {
-  const meshRef = useRef<THREE.Mesh>(null)
-
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.5) * 0.1
-      meshRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.3) * 0.1
-    }
-  })
-
+function FloatingElement({
+  className,
+  children,
+  delay = 0,
+}: {
+  className?: string
+  children: React.ReactNode
+  delay?: number
+}) {
   return (
-    <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-      <Sphere ref={meshRef} position={position} args={[size, 32, 32]}>
-        <meshStandardMaterial color={color} metalness={0.8} roughness={0.2} />
-      </Sphere>
-    </Float>
+    <div
+      className={`absolute animate-bounce ${className}`}
+      style={{
+        animationDelay: `${delay}s`,
+        animationDuration: '3s',
+        animationIterationCount: 'infinite',
+      }}
+    >
+      {children}
+    </div>
   )
 }
 
-function Scene3D() {
+function AnimatedBackground() {
   return (
-    <Canvas camera={{ position: [0, 0, 10], fov: 50 }}>
-      <ambientLight intensity={0.5} />
-      <pointLight position={[10, 10, 10]} intensity={1} />
-      <FloatingSphere position={[-4, 2, 0]} color="#06b6d4" size={0.8} />
-      <FloatingSphere position={[4, -1, -2]} color="#84cc16" size={0.6} />
-      <FloatingSphere position={[2, 3, -1]} color="#f59e0b" size={0.4} />
-      <FloatingSphere position={[-2, -2, 1]} color="#ec4899" size={0.5} />
-      <FloatingSphere position={[0, 0, -3]} color="#8b5cf6" size={0.7} />
-      <FloatingSphere position={[-3, -3, 2]} color="#10b981" size={0.3} />
-      <FloatingSphere position={[3, 1, 1]} color="#f97316" size={0.5} />
-      <Environment preset="city" />
-    </Canvas>
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <FloatingElement className="top-1/4 left-1/4" delay={0}>
+        <div className="w-12 h-12 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full opacity-20" />
+      </FloatingElement>
+      <FloatingElement className="top-1/3 right-1/4" delay={0.5}>
+        <div className="w-8 h-8 bg-gradient-to-br from-lime-400 to-green-500 rounded-full opacity-20" />
+      </FloatingElement>
+      <FloatingElement className="top-1/2 left-1/3" delay={1}>
+        <div className="w-6 h-6 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full opacity-20" />
+      </FloatingElement>
+      <FloatingElement className="bottom-1/3 right-1/3" delay={1.5}>
+        <div className="w-10 h-10 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full opacity-20" />
+      </FloatingElement>
+      <FloatingElement className="bottom-1/4 left-1/2" delay={2}>
+        <div className="w-14 h-14 bg-gradient-to-br from-purple-400 to-violet-500 rounded-full opacity-20" />
+      </FloatingElement>
+    </div>
   )
 }
 
@@ -119,9 +121,9 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 dark:from-primary/20 dark:via-secondary/10 dark:to-accent/20"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/40"></div>
 
-        {/* 3D Background */}
-        <div className="absolute inset-0 opacity-20">
-          <Scene3D />
+        {/* Animated Background */}
+        <div className="absolute inset-0 opacity-30">
+          <AnimatedBackground />
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10">

@@ -7,30 +7,16 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { AiChatbot } from "@/components/ai-chatbot"
-import { Canvas } from "@react-three/fiber"
-import { OrbitControls, Sphere, MeshDistortMaterial, Environment, Float } from "@react-three/drei"
+
 import { Brain, Sparkles, Zap, Target, Palette, TrendingUp } from "lucide-react"
-import { Suspense } from "react"
 
 function AnimatedSphere() {
   return (
-    <Float speed={2} rotationIntensity={1} floatIntensity={2}>
-      <Sphere args={[1, 100, 200]} scale={2}>
-        <MeshDistortMaterial color="#06b6d4" attach="material" distort={0.3} speed={1.5} roughness={0} />
-      </Sphere>
-    </Float>
-  )
-}
-
-function Scene() {
-  return (
-    <>
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[10, 10, 5]} intensity={1} />
-      <AnimatedSphere />
-      <Environment preset="studio" />
-      <OrbitControls enableZoom={false} enablePan={false} />
-    </>
+    <div className="relative w-32 h-32 mx-auto">
+      <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-full animate-pulse opacity-80"></div>
+      <div className="absolute inset-2 bg-gradient-to-tr from-cyan-300 to-blue-500 rounded-full animate-bounce"></div>
+      <div className="absolute inset-4 bg-gradient-to-bl from-cyan-200 to-blue-400 rounded-full animate-ping"></div>
+    </div>
   )
 }
 
@@ -47,13 +33,9 @@ export default function FlashfitsAI() {
 
       {/* Hero Section with 3D Elements */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* 3D Background */}
-        <div className="absolute inset-0 opacity-30">
-          <Canvas camera={{ position: [0, 0, 5] }}>
-            <Suspense fallback={null}>
-              <Scene />
-            </Suspense>
-          </Canvas>
+        {/* Animated Background */}
+        <div className="absolute inset-0 opacity-30 flex items-center justify-center">
+          <AnimatedSphere />
         </div>
 
         {/* Hero Content */}

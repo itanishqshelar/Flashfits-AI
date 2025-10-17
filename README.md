@@ -1,4 +1,4 @@
-# Flashfits AI - Fashion E-commerce Platform 
+# Flashfits AI - Fashion E-commerce Platform
 
 A modern, AI-powered fashion e-commerce web application built with Next.js, React, and Supabase. Flashfits AI offers a seamless shopping experience with intelligent product recommendations and a sleek, responsive design.
 
@@ -33,7 +33,7 @@ A modern, AI-powered fashion e-commerce web application built with Next.js, Reac
 Before you begin, ensure you have the following installed:
 
 - [Node.js](https://nodejs.org/) (v18 or later)
-- [pnpm](https://pnpm.io/) package manager
+- [npm](https://www.npmjs.com/) package manager (comes with Node.js)
 - A [Supabase](https://supabase.com/) account
 
 ## 🚀 Getting Started
@@ -197,8 +197,8 @@ Contributions are welcome! Please follow these steps:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-<<<<<<< HEAD
-=======
+# <<<<<<< HEAD
+
 ## 👨‍💻 Author
 
 **Tanishq Shelar** - [@itanishqshelar](https://github.com/itanishqshelar)
@@ -216,7 +216,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Live Demo](https://flashfits-ai.vercel.app)
 - [Project Repository](https://github.com/itanishqshelar/Flashfits-AI)
 - [Bug Reports](https://github.com/itanishqshelar/Flashfits-AI/issues)
->>>>>>> a5278ed (feat: Add AI Fashion Chatbot with Gemini API integration)
+  > > > > > > > a5278ed (feat: Add AI Fashion Chatbot with Gemini API integration)
 
 ---
 
