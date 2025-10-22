@@ -29,22 +29,29 @@ interface ProductCardProps {
 
 export function ProductCard({ product, onAddToCart, onToggleWishlist }: ProductCardProps) {
   return (
-    <Card className="group cursor-pointer overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="relative aspect-[3/4] bg-muted">
+    <Card className="group cursor-pointer overflow-hidden card-hover glass border-2 border-primary/5 hover:border-primary/20 backdrop-blur-sm transition-all duration-500">
+      <div className="relative aspect-[3/4] bg-gradient-to-br from-muted to-muted/50 overflow-hidden">
         <img
           src={product.image || "/placeholder.svg"}
           alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
         />
+
+        {/* Gradient overlay on hover */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
           {product.isNew && (
-            <Badge variant="secondary" className="text-xs">
-              New
+            <Badge variant="secondary" className="text-xs backdrop-blur-md bg-primary/90 text-white border-0 shadow-lg">
+              ✨ New
             </Badge>
           )}
-          {product.isSale && <Badge className="bg-destructive text-destructive-foreground text-xs">Sale</Badge>}
+          {product.isSale && (
+            <Badge className="bg-gradient-to-r from-accent to-destructive text-white text-xs border-0 shadow-lg">
+              🔥 Sale
+            </Badge>
+          )}
         </div>
 
         {/* Action Buttons */}
@@ -52,26 +59,30 @@ export function ProductCard({ product, onAddToCart, onToggleWishlist }: ProductC
           <Button
             variant="ghost"
             size="icon"
-            className="bg-background/80 hover:bg-background opacity-0 group-hover:opacity-100 transition-opacity"
+            className="glass backdrop-blur-md border border-white/20 hover:bg-primary/20 hover:border-primary opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
             onClick={() => onToggleWishlist?.(product.id)}
           >
-            <Heart className="h-4 w-4" />
+            <Heart className="h-4 w-4 text-white" />
           </Button>
         </div>
 
         {/* Quick Add Button */}
-        <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-          <Button className="w-full" size="sm" onClick={() => onAddToCart?.(product.id)}>
+        <div className="absolute bottom-3 left-3 right-3 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+          <Button 
+            className="w-full bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-accent text-white border-0 shadow-lg font-semibold" 
+            size="sm" 
+            onClick={() => onAddToCart?.(product.id)}
+          >
             <ShoppingBag className="h-4 w-4 mr-2" />
             Quick Add
           </Button>
         </div>
       </div>
 
-      <CardContent className="p-4">
+      <CardContent className="p-4 bg-gradient-to-b from-card to-card/80">
         <div className="mb-2">
           <Link href={`/product/${product.dbId || product.id}`}>
-            <h3 className="font-sans font-semibold text-foreground group-hover:text-primary transition-colors cursor-pointer hover:underline">
+            <h3 className="font-sans font-semibold text-foreground group-hover:gradient-text transition-all duration-300 cursor-pointer">
               {product.name}
             </h3>
           </Link>
@@ -79,7 +90,7 @@ export function ProductCard({ product, onAddToCart, onToggleWishlist }: ProductC
         </div>
 
         <div className="flex items-center gap-2 mb-3">
-          <span className="font-sans font-bold text-lg text-foreground">₹{product.price.toFixed(0)}</span>
+          <span className="font-sans font-bold text-lg gradient-text">₹{product.price.toFixed(0)}</span>
           {product.originalPrice && (
             <span className="font-serif text-sm text-muted-foreground line-through">₹{product.originalPrice.toFixed(0)}</span>
           )}
@@ -89,11 +100,11 @@ export function ProductCard({ product, onAddToCart, onToggleWishlist }: ProductC
         <div className="flex items-center gap-2 mb-2">
           <span className="font-serif text-xs text-muted-foreground">Colors:</span>
           <div className="flex gap-1">
-      {product.colors.slice(0, 3).map((color, index) => (
+            {product.colors.slice(0, 3).map((color, index) => (
               <div
                 key={index}
-                className="w-4 h-4 rounded-full border border-border"
-        style={{ backgroundColor: resolveColor(color) }}
+                className="w-5 h-5 rounded-full border-2 border-border hover:border-primary transition-all duration-300 hover:scale-110 shadow-sm"
+                style={{ backgroundColor: resolveColor(color) }}
               />
             ))}
             {product.colors.length > 3 && (

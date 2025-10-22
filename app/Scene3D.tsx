@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useMemo } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
 import { Sphere, Float } from "@react-three/drei"
 import * as THREE from "three"
@@ -19,18 +19,31 @@ function FloatingSphere({
     }
   })
 
+  const material = useMemo(
+    () => new THREE.MeshStandardMaterial({ 
+      color: color, 
+      metalness: 0.8, 
+      roughness: 0.2 
+    }),
+    [color]
+  )
+
   return (
     <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-      <Sphere ref={meshRef} position={position} args={[size, 32, 32]}>
-        <meshStandardMaterial color={color} metalness={0.8} roughness={0.2} />
-      </Sphere>
+      <mesh ref={meshRef} position={position} material={material}>
+        <sphereGeometry args={[size, 32, 32]} />
+      </mesh>
     </Float>
   )
 }
 
-export function Scene3D() {
+export default function Scene3D() {
   return (
-    <Canvas camera={{ position: [0, 0, 10], fov: 50 }}>
+    <Canvas 
+      camera={{ position: [0, 0, 10], fov: 50 }}
+      gl={{ antialias: true, alpha: true }}
+      dpr={[1, 2]}
+    >
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} intensity={1} />
       <FloatingSphere position={[-4, 2, 0]} color="#06b6d4" size={0.8} />

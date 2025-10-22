@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from "react"
 import dynamic from "next/dynamic"
 
 // Dynamically import the entire Scene3D component to avoid SSR issues
-const Scene3D = dynamic(() => import("./Scene3D").then(mod => ({ default: mod.Scene3D })), { 
+const Scene3D = dynamic(() => import("./Scene3D"), { 
   ssr: false,
   loading: () => <div className="w-full h-full bg-gradient-to-br from-primary/5 to-secondary/5 animate-pulse" />
 })
@@ -61,30 +61,15 @@ export default function HomePage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative overflow-hidden">
       <Navigation />
 
-      <div className="absolute top-0 left-0 right-0 h-96 pointer-events-none z-10">
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-full max-w-4xl h-full">
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-96 h-96 bg-gradient-to-b from-primary/30 via-secondary/20 to-transparent rounded-full blur-3xl animate-pulse"></div>
-          <div
-            className="absolute top-8 left-1/3 transform -translate-x-1/2 w-64 h-64 bg-gradient-to-b from-accent/25 via-primary/15 to-transparent rounded-full blur-2xl animate-pulse"
-            style={{ animationDelay: "1s" }}
-          ></div>
-          <div
-            className="absolute top-4 right-1/3 transform translate-x-1/2 w-80 h-80 bg-gradient-to-b from-secondary/20 via-accent/15 to-transparent rounded-full blur-3xl animate-pulse"
-            style={{ animationDelay: "2s" }}
-          ></div>
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/60"></div>
-      </div>
-
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 dark:from-primary/20 dark:via-secondary/10 dark:to-accent/20"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/40"></div>
-
-        {/* 3D Background */}
-        <div className="absolute inset-0 opacity-20">
+      {/* Hero Section */}
+      <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div className="absolute inset-0 gradient-bg opacity-50" />
+        
+        {/* 3D Background with reduced opacity */}
+        <div className="absolute inset-0 opacity-10 dark:opacity-20">
           <Scene3D />
         </div>
 
@@ -93,34 +78,39 @@ export default function HomePage() {
             ref={heroRef}
             className="text-center mb-16 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out"
             style={{
-              transform: `translateY(${scrollY * 0.1}px)`,
+              transform: `translateY(${scrollY * 0.05}px)`,
             }}
           >
-            <Badge variant="secondary" className="mb-4 font-serif">
-              AI-Powered Fashion
+            <Badge variant="secondary" className="mb-6 px-4 py-2 text-sm font-semibold bg-primary/90 dark:bg-primary/80 text-white backdrop-blur-md border border-primary/20 shadow-lg">
+              ✨ AI-Powered Fashion Revolution
             </Badge>
-            <h1 className="font-sans font-bold text-4xl md:text-6xl lg:text-7xl text-foreground mb-6">
+            <h1 className="font-sans font-bold text-5xl md:text-7xl lg:text-8xl mb-8 leading-tight">
               Your Style,
-              <span className="block bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              <span className="block gradient-text mt-2">
                 Perfectly Curated
               </span>
             </h1>
-            <p className="font-serif text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-              Experience personalized fashion recommendations powered by advanced algorithms. Discover pieces that match
-              your unique style and preferences.
+            <p className="font-serif text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10 leading-relaxed">
+              Experience personalized fashion recommendations powered by advanced AI. Discover pieces that match
+              your unique style and elevate your wardrobe.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <Link href="/shop">
-                <Button size="lg" className="font-serif transform hover:scale-105 transition-all duration-200 hover:shadow-2xl hover:animate-glow bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80">
-                  Start Shopping
+                <Button 
+                  size="lg" 
+                  className="px-8 py-6 text-lg font-semibold rounded-xl bg-gradient-to-r from-primary via-secondary to-accent hover:shadow-2xl hover:shadow-primary/50 transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden group"
+                >
+                  <span className="relative z-10">Start Shopping</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-accent via-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </Button>
               </Link>
               <Button
                 variant="outline"
                 size="lg"
-                className="font-serif bg-transparent transform hover:scale-105 transition-all duration-200 hover:shadow-lg hover:border-primary hover:text-primary hover:animate-shimmer"
+                className="px-8 py-6 text-lg font-semibold rounded-xl glass border-2 border-primary/30 hover:border-primary hover:bg-primary/10 transform hover:scale-105 transition-all duration-300 backdrop-blur-md"
                 onClick={handleStyleQuiz}
               >
+                <Sparkles className="mr-2 h-5 w-5" />
                 Take Style Quiz
               </Button>
             </div>
@@ -128,64 +118,69 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-accent/10 via-primary/5 to-secondary/10">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
-            <h2 className="font-sans font-bold text-3xl md:text-4xl text-foreground mb-4">Featured Looks</h2>
-            <p className="font-serif text-lg text-muted-foreground max-w-2xl mx-auto">
-              Inspired by the latest trends from Zara. Discover styles that blend elegance and modernity.
+      {/* Featured Looks Section */}
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-16 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
+            <h2 className="font-sans font-bold text-4xl md:text-5xl mb-4">
+              <span className="gradient-text">Featured Looks</span>
+            </h2>
+            <p className="font-serif text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+              Inspired by the latest trends. Discover styles that blend elegance and modernity.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div
-              className="relative overflow-hidden rounded-2xl shadow-2xl transform transition-all duration-500 hover:scale-105 scroll-animate opacity-0 translate-y-8"
-              style={{
-                transform: `rotate(${scrollY * 0.02}deg) scale(${1 + Math.sin(scrollY * 0.001) * 0.05}) translateY(${scrollY * 0.1}px)`,
-                animationDelay: "0ms",
-              }}
+              className="relative overflow-hidden rounded-3xl shadow-2xl card-hover scroll-animate opacity-0 translate-y-8 group"
             >
               <img
                 src="/zara1.jpg"
                 alt="Zara Inspired Look 1"
-                className="w-full h-auto object-cover transition-transform duration-700 hover:scale-110"
+                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
-              <div className="absolute bottom-4 left-4 text-white opacity-0 hover:opacity-100 transition-opacity duration-300">
-                <h3 className="font-sans font-bold text-xl mb-1">Elegant Minimalism</h3>
-                <p className="font-serif text-sm">Timeless pieces with a modern twist</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
+                <h3 className="font-sans font-bold text-3xl mb-2 text-white drop-shadow-lg">Elegant Minimalism</h3>
+                <p className="font-serif text-lg text-white/90 drop-shadow-md">Timeless pieces with a modern twist</p>
               </div>
             </div>
             <div
-              className="relative overflow-hidden rounded-2xl shadow-2xl transform transition-all duration-500 hover:scale-105 scroll-animate opacity-0 translate-y-8"
-              style={{
-                transform: `rotate(${-scrollY * 0.02}deg) scale(${1 + Math.sin(scrollY * 0.001 + Math.PI) * 0.05}) translateY(${scrollY * 0.15}px)`,
-                animationDelay: "200ms",
-              }}
+              className="relative overflow-hidden rounded-3xl shadow-2xl card-hover scroll-animate opacity-0 translate-y-8 group"
+              style={{ animationDelay: "200ms" }}
             >
               <img
                 src="/zara2.jpg"
                 alt="Zara Inspired Look 2"
-                className="w-full h-auto object-cover transition-transform duration-700 hover:scale-110"
+                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
-              <div className="absolute bottom-4 left-4 text-white opacity-0 hover:opacity-100 transition-opacity duration-300">
-                <h3 className="font-sans font-bold text-xl mb-1">Urban Chic</h3>
-                <p className="font-serif text-sm">Bold statements for the city streets</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-br from-secondary/20 via-transparent to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
+                <h3 className="font-sans font-bold text-3xl mb-2 text-white drop-shadow-lg">Urban Chic</h3>
+                <p className="font-serif text-lg text-white/90 drop-shadow-md">Bold statements for the city streets</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-black">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-8 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
-            <h2 className="font-sans font-bold text-3xl md:text-4xl text-white mb-4">Spring-Summer 2026 Show</h2>
-            <p className="font-serif text-lg text-gray-300 max-w-2xl mx-auto">
+      {/* Video Showcase Section */}
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 aurora-glow">
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-black/50 to-background dark:from-background dark:via-black/80 dark:to-background" />
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-12 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
+            <h2 className="font-sans font-bold text-4xl md:text-5xl text-white mb-4">
+              Spring-Summer 2026 Show
+            </h2>
+            <p className="font-serif text-xl text-gray-300 max-w-2xl mx-auto">
               Experience the future of fashion with our exclusive runway preview.
             </p>
           </div>
-          <div className="relative rounded-2xl overflow-hidden shadow-2xl scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out" style={{ animationDelay: "200ms" }}>
+          <div 
+            className="relative rounded-3xl overflow-hidden shadow-2xl scroll-animate opacity-0 scale-95 transition-all duration-1000 ease-out border-2 border-white/10"
+            style={{ animationDelay: "200ms" }}
+          >
             <video
               autoPlay
               muted
@@ -197,16 +192,21 @@ export default function HomePage() {
               <source src="/diordemo.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 pointer-events-none mix-blend-overlay" />
           </div>
         </div>
       </section>
 
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
-            <h2 className="font-sans font-bold text-3xl md:text-4xl text-foreground mb-4">What Our Users Say</h2>
-            <p className="font-serif text-lg text-muted-foreground max-w-2xl mx-auto">
+      {/* Testimonials Section */}
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8">
+        <div className="absolute inset-0 gradient-bg opacity-30" />
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-16 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
+            <h2 className="font-sans font-bold text-4xl md:text-5xl mb-4">
+              What Our Users <span className="gradient-text">Say</span>
+            </h2>
+            <p className="font-serif text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
               Hear from fashion enthusiasts who've transformed their style with Flashfits.
             </p>
           </div>
@@ -233,20 +233,22 @@ export default function HomePage() {
             ].map((testimonial, index) => (
               <Card
                 key={index}
-                className="p-6 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out hover:scale-105 hover:shadow-xl bg-white/50 backdrop-blur-sm"
+                className="p-8 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out card-hover glass border-2 border-primary/10 backdrop-blur-lg"
                 style={{ animationDelay: testimonial.delay }}
               >
                 <CardContent className="pt-0">
-                  <div className="mb-4">
-                    <Sparkles className="h-8 w-8 text-primary mb-2" />
-                    <p className="font-serif italic text-muted-foreground">"{testimonial.quote}"</p>
+                  <div className="mb-6">
+                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center mb-4 shadow-lg">
+                      <Sparkles className="h-7 w-7 text-white" />
+                    </div>
+                    <p className="font-serif italic text-lg text-foreground leading-relaxed">"{testimonial.quote}"</p>
                   </div>
                   <div className="flex items-center">
-                    <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white font-bold mr-3">
+                    <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-white font-bold text-lg mr-4 shadow-md">
                       {testimonial.author[0]}
                     </div>
                     <div>
-                      <p className="font-sans font-bold">{testimonial.author}</p>
+                      <p className="font-sans font-bold text-foreground">{testimonial.author}</p>
                       <p className="text-sm text-muted-foreground">{testimonial.role}</p>
                     </div>
                   </div>
@@ -258,68 +260,77 @@ export default function HomePage() {
       </section>
 
       {/* Creative Style Inspiration Section */}
-      <div className="py-16 px-4 sm:px-6 lg:px-8 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="font-sans font-bold text-3xl md:text-4xl text-foreground mb-4">Style Inspiration</h2>
-            <p className="font-serif text-lg text-muted-foreground max-w-2xl mx-auto">
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 dark:from-primary/10 dark:via-secondary/10 dark:to-accent/10" />
+        
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="font-sans font-bold text-4xl md:text-5xl mb-4">
+              Style <span className="gradient-text">Inspiration</span>
+            </h2>
+            <p className="font-serif text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
               Let AI curate your perfect look from millions of possibilities. Discover trends that match your vibe.
             </p>
           </div>
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 p-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-              <div className="space-y-6">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
-                    <Sparkles className="h-6 w-6 text-primary" />
+          <div className="relative overflow-hidden rounded-3xl glass p-10 md:p-12 backdrop-blur-xl border-2 border-white/10 shadow-2xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+              <div className="space-y-8">
+                <div className="flex items-start space-x-6 group">
+                  <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <Sparkles className="h-8 w-8 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-sans font-bold text-xl">AI-Powered Curation</h3>
-                    <p className="text-muted-foreground">Personalized recommendations based on your preferences</p>
+                    <h3 className="font-sans font-bold text-2xl mb-2 group-hover:gradient-text transition-all duration-300">AI-Powered Curation</h3>
+                    <p className="text-muted-foreground text-lg">Personalized recommendations based on your unique preferences and style</p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-secondary/20 rounded-full flex items-center justify-center">
-                    <TrendingUp className="h-6 w-6 text-secondary" />
+                <div className="flex items-start space-x-6 group">
+                  <div className="w-16 h-16 bg-gradient-to-br from-secondary to-accent rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <TrendingUp className="h-8 w-8 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-sans font-bold text-xl">Trend Forecasting</h3>
-                    <p className="text-muted-foreground">Stay ahead with cutting-edge fashion insights</p>
+                    <h3 className="font-sans font-bold text-2xl mb-2 group-hover:gradient-text transition-all duration-300">Trend Forecasting</h3>
+                    <p className="text-muted-foreground text-lg">Stay ahead with cutting-edge fashion insights and predictions</p>
                   </div>
                 </div>
               </div>
-              <div className="relative">
-                <div className="aspect-square bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full flex items-center justify-center overflow-hidden">
-                  <div className="w-3/4 h-3/4 bg-gradient-to-br from-accent/30 to-primary/30 rounded-full animate-pulse"></div>
-                  <div className="absolute inset-4 bg-gradient-to-br from-secondary/40 to-accent/40 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
-                  <div className="absolute inset-8 bg-gradient-to-br from-primary/50 to-secondary/50 rounded-full animate-pulse" style={{ animationDelay: '2s' }}></div>
+              <div className="relative flex items-center justify-center min-h-[400px]">
+                <div className="relative w-80 h-80">
+                  {/* Main gradient circles */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-secondary/30 to-accent/30 rounded-full blur-md"></div>
+                  <div className="absolute inset-8 bg-gradient-to-br from-secondary/40 via-accent/40 to-primary/40 rounded-full blur-sm"></div>
+                  <div className="absolute inset-16 bg-gradient-to-br from-accent/50 via-primary/50 to-secondary/50 rounded-full"></div>
+                  
+                  {/* Center content */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center z-10">
+                      <Sparkles className="h-16 w-16 text-primary mx-auto mb-4" />
+                      <p className="text-2xl font-bold gradient-text">AI Powered</p>
+                      <p className="text-lg text-muted-foreground">Style Discovery</p>
+                    </div>
+                  </div>
+                  
+                  {/* Decorative dots */}
+                  <div className="absolute top-0 right-1/4 w-4 h-4 bg-primary rounded-full shadow-lg"></div>
+                  <div className="absolute bottom-1/4 left-0 w-3 h-3 bg-secondary rounded-full shadow-lg"></div>
+                  <div className="absolute top-1/3 right-0 w-5 h-5 bg-accent rounded-full shadow-lg"></div>
                 </div>
-                <div className="absolute -top-4 -right-4 w-8 h-8 bg-primary rounded-full animate-bounce"></div>
-                <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-secondary rounded-full animate-bounce" style={{ animationDelay: '0.5s' }}></div>
-                <div className="absolute top-1/2 -left-6 w-4 h-4 bg-accent rounded-full animate-bounce" style={{ animationDelay: '1s' }}></div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30 relative overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 opacity-5">
-          <div
-            className="absolute top-20 left-10 w-32 h-32 bg-primary rounded-full blur-3xl"
-            style={{ transform: `translateX(${scrollY * 0.1}px)` }}
-          />
-          <div
-            className="absolute bottom-20 right-10 w-48 h-48 bg-secondary rounded-full blur-3xl"
-            style={{ transform: `translateX(${-scrollY * 0.15}px)` }}
-          />
-        </div>
+      {/* Features Section */}
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-muted/30 via-background to-muted/30" />
 
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-12 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
-            <h2 className="font-sans font-bold text-3xl md:text-4xl text-foreground mb-4">Why Choose Flashfits?</h2>
-            <p className="font-serif text-lg text-muted-foreground max-w-2xl mx-auto">
+          <div className="text-center mb-16 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
+            <h2 className="font-sans font-bold text-4xl md:text-5xl mb-4">
+              Why Choose <span className="gradient-text">Flashfits?</span>
+            </h2>
+            <p className="font-serif text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
               Our AI-powered platform learns your preferences to deliver personalized fashion recommendations.
             </p>
           </div>
@@ -330,37 +341,38 @@ export default function HomePage() {
                 icon: Sparkles,
                 title: "AI Recommendations",
                 desc: "Advanced algorithms analyze your style preferences to suggest perfect matches.",
-                color: "primary",
+                gradient: "from-primary to-secondary",
                 delay: "0ms",
               },
               {
                 icon: TrendingUp,
                 title: "Trend Insights",
                 desc: "Stay ahead with curated trends and seasonal fashion insights.",
-                color: "secondary",
+                gradient: "from-secondary to-accent",
                 delay: "200ms",
               },
               {
                 icon: User,
                 title: "Personal Styling",
                 desc: "Get personalized styling advice tailored to your body type and lifestyle.",
-                color: "accent",
+                gradient: "from-accent to-primary",
                 delay: "400ms",
               },
             ].map((feature, index) => (
               <Card
                 key={index}
-                className="text-center p-6 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out transform hover:scale-105 hover:shadow-2xl hover:bg-gradient-to-br hover:from-primary/5 hover:to-secondary/5 group border-2 border-transparent hover:border-primary/20"
+                className="text-center p-8 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out card-hover glass border-2 border-primary/10 backdrop-blur-md group relative overflow-hidden"
                 style={{ animationDelay: feature.delay }}
               >
-                <CardContent className="pt-6">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <CardContent className="pt-6 relative z-10">
                   <div
-                    className={`w-12 h-12 bg-${feature.color}/10 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:bg-${feature.color}/20 transition-all duration-300 group-hover:shadow-lg`}
+                    className={`w-16 h-16 bg-gradient-to-br ${feature.gradient} rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-500`}
                   >
-                    <feature.icon className={`h-6 w-6 text-${feature.color} group-hover:animate-pulse`} />
+                    <feature.icon className="h-8 w-8 text-white" />
                   </div>
-                  <h3 className="font-sans font-bold text-xl mb-2 group-hover:text-primary transition-colors duration-300">{feature.title}</h3>
-                  <p className="font-serif text-muted-foreground group-hover:text-foreground transition-colors duration-300">{feature.desc}</p>
+                  <h3 className="font-sans font-bold text-2xl mb-4 group-hover:gradient-text transition-all duration-300">{feature.title}</h3>
+                  <p className="font-serif text-muted-foreground text-lg leading-relaxed group-hover:text-foreground transition-colors duration-300">{feature.desc}</p>
                 </CardContent>
               </Card>
             ))}
@@ -368,22 +380,32 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
-          <h2 className="font-sans font-bold text-3xl md:text-4xl text-foreground mb-4">
-            Ready to Transform Your Wardrobe?
-          </h2>
-          <p className="font-serif text-lg text-muted-foreground mb-8">
-            Join thousands of fashion enthusiasts who trust Flashfits for their style journey.
-          </p>
-          <Link href="/shop">
-            <Button
-              size="lg"
-              className="font-serif transform hover:scale-110 transition-all duration-300 hover:shadow-lg"
-            >
-              Explore Collections
-            </Button>
-          </Link>
+      {/* CTA Section */}
+      <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div className="absolute inset-0 gradient-bg opacity-40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-transparent" />
+        
+        <div className="max-w-4xl mx-auto text-center relative z-10 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out">
+          <div className="glass rounded-3xl p-12 md:p-16 backdrop-blur-xl border-2 border-white/10 shadow-2xl">
+            <h2 className="font-sans font-bold text-4xl md:text-5xl mb-6">
+              Ready to Transform Your <span className="gradient-text">Wardrobe?</span>
+            </h2>
+            <p className="font-serif text-xl md:text-2xl text-muted-foreground mb-10 leading-relaxed">
+              Join thousands of fashion enthusiasts who trust Flashfits for their style journey.
+            </p>
+            <Link href="/shop">
+              <Button
+                size="lg"
+                className="px-10 py-7 text-xl font-semibold rounded-2xl bg-gradient-to-r from-primary via-secondary to-accent hover:shadow-2xl hover:shadow-primary/50 transform hover:scale-110 transition-all duration-300 border-0 relative overflow-hidden group"
+              >
+                <span className="relative z-10 flex items-center gap-3">
+                  <Sparkles className="h-6 w-6" />
+                  Explore Collections
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-accent via-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -394,47 +416,13 @@ export default function HomePage() {
           opacity: 1 !important;
           transform: translateY(0) !important;
         }
-        
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-        }
-        
-        .animate-float {
-          animation: float 3s ease-in-out infinite;
-        }
-
-        /* Added pulsing animation for dynamic lighting effect */
-        @keyframes pulse {
-          0%, 100% { opacity: 0.3; transform: scale(1); }
-          50% { opacity: 0.6; transform: scale(1.1); }
-        }
-
-        @keyframes glow {
-          0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
-          50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.8); }
-        }
-
-        .animate-glow {
-          animation: glow 2s ease-in-out infinite;
-        }
-
-        @keyframes shimmer {
-          0% { background-position: -200% 0; }
-          100% { background-position: 200% 0; }
-        }
-
-        .animate-shimmer {
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-          background-size: 200% 100%;
-          animation: shimmer 2s infinite;
-        }
       `}</style>
 
       {/* AI Chatbot */}
       <AiChatbot 
         isOpen={isChatbotOpen} 
         onClose={() => setIsChatbotOpen(false)}
+        initialMessage={initialMessage}
       />
     </div>
   )

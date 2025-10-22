@@ -69,17 +69,13 @@ export default function ProductDetailPage() {
       setSimilarLoading(true)
       try {
         const params = new URLSearchParams()
-        params.set('limit', '8') // Fetch more to ensure we get enough after filtering
+        params.set('limit', '4')
         params.set('category', category)
         
         const response = await fetch(`/api/products?${params.toString()}`)
         if (response.ok) {
           const { items } = await response.json()
-          // Filter out the current product by comparing string representations
-          const filteredProducts = items
-            .filter((item: Product) => String(item.id) !== String(currentProductId))
-            .slice(0, 4)
-          setSimilarProducts(filteredProducts)
+          setSimilarProducts(items.filter((item: Product) => item.id !== currentProductId))
         }
       } catch (error) {
         console.error('Error fetching similar products:', error)
