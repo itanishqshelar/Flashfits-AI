@@ -64,57 +64,26 @@ export default function HomePage() {
     <div className="min-h-screen bg-background relative overflow-hidden">
       <Navigation />
 
-      {/* Hero Section */}
-      <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0 gradient-bg opacity-50" />
-        
-        {/* 3D Background with reduced opacity */}
-        <div className="absolute inset-0 opacity-10 dark:opacity-20">
-          <Scene3D />
-        </div>
-
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div
-            ref={heroRef}
-            className="text-center mb-16 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out"
-            style={{
-              transform: `translateY(${scrollY * 0.05}px)`,
-            }}
+      {/* Hero Section - Bulgari Video */}
+      <section className="relative h-screen w-full overflow-hidden">
+        {/* Video Background */}
+        <div className="absolute inset-0 will-change-transform">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="w-full h-full object-cover"
+            style={{ transform: 'translateZ(0)' }}
           >
-            <Badge variant="secondary" className="mb-6 px-4 py-2 text-sm font-semibold bg-primary/90 dark:bg-primary/80 text-white backdrop-blur-md border border-primary/20 shadow-lg">
-              ✨ AI-Powered Fashion Revolution
-            </Badge>
-            <h1 className="font-sans font-bold text-5xl md:text-7xl lg:text-8xl mb-8 leading-tight">
-              Your Style,
-              <span className="block gradient-text mt-2">
-                Perfectly Curated
-              </span>
-            </h1>
-            <p className="font-serif text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10 leading-relaxed">
-              Experience personalized fashion recommendations powered by advanced AI. Discover pieces that match
-              your unique style and elevate your wardrobe.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <Link href="/shop">
-                <Button 
-                  size="lg" 
-                  className="px-8 py-6 text-lg font-semibold rounded-xl bg-gradient-to-r from-primary via-secondary to-accent hover:shadow-2xl hover:shadow-primary/50 transform hover:scale-105 transition-all duration-300 border-0 relative overflow-hidden group"
-                >
-                  <span className="relative z-10">Start Shopping</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-accent via-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </Button>
-              </Link>
-              <Button
-                variant="outline"
-                size="lg"
-                className="px-8 py-6 text-lg font-semibold rounded-xl glass border-2 border-primary/30 hover:border-primary hover:bg-primary/10 transform hover:scale-105 transition-all duration-300 backdrop-blur-md"
-                onClick={handleStyleQuiz}
-              >
-                <Sparkles className="mr-2 h-5 w-5" />
-                Take Style Quiz
-              </Button>
-            </div>
-          </div>
+            <source src="/ff_grid/bvlgary.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          
+          {/* Subtle Gradient Overlays for blending - Fixed position to prevent jitter */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-background/60 pointer-events-none" style={{ transform: 'translateZ(0)' }} />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent pointer-events-none" style={{ transform: 'translateZ(0)' }} />
         </div>
       </section>
 
@@ -259,63 +228,76 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Creative Style Inspiration Section */}
+      {/* Fashion Gallery - Pinterest-like Grid */}
       <section className="relative py-20 px-4 sm:px-6 lg:px-8 scroll-animate opacity-0 translate-y-8 transition-all duration-1000 ease-out overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 dark:from-primary/10 dark:via-secondary/10 dark:to-accent/10" />
         
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-16">
             <h2 className="font-sans font-bold text-4xl md:text-5xl mb-4">
-              Style <span className="gradient-text">Inspiration</span>
+              Trending <span className="gradient-text">Collections</span>
             </h2>
             <p className="font-serif text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-              Let AI curate your perfect look from millions of possibilities. Discover trends that match your vibe.
+              Discover the latest fashion moments from luxury brands around the world.
             </p>
           </div>
-          <div className="relative overflow-hidden rounded-3xl glass p-10 md:p-12 backdrop-blur-xl border-2 border-white/10 shadow-2xl">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-              <div className="space-y-8">
-                <div className="flex items-start space-x-6 group">
-                  <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <Sparkles className="h-8 w-8 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-sans font-bold text-2xl mb-2 group-hover:gradient-text transition-all duration-300">AI-Powered Curation</h3>
-                    <p className="text-muted-foreground text-lg">Personalized recommendations based on your unique preferences and style</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-6 group">
-                  <div className="w-16 h-16 bg-gradient-to-br from-secondary to-accent rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <TrendingUp className="h-8 w-8 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-sans font-bold text-2xl mb-2 group-hover:gradient-text transition-all duration-300">Trend Forecasting</h3>
-                    <p className="text-muted-foreground text-lg">Stay ahead with cutting-edge fashion insights and predictions</p>
-                  </div>
-                </div>
-              </div>
-              <div className="relative flex items-center justify-center min-h-[400px]">
-                <div className="relative w-80 h-80">
-                  {/* Main gradient circles */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-secondary/30 to-accent/30 rounded-full blur-md"></div>
-                  <div className="absolute inset-8 bg-gradient-to-br from-secondary/40 via-accent/40 to-primary/40 rounded-full blur-sm"></div>
-                  <div className="absolute inset-16 bg-gradient-to-br from-accent/50 via-primary/50 to-secondary/50 rounded-full"></div>
-                  
-                  {/* Center content */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center z-10">
-                      <Sparkles className="h-16 w-16 text-primary mx-auto mb-4" />
-                      <p className="text-2xl font-bold gradient-text">AI Powered</p>
-                      <p className="text-lg text-muted-foreground">Style Discovery</p>
+          
+          {/* Horizontal Scrolling Container */}
+          <div className="relative">
+            <div className="overflow-x-auto scrollbar-hide pb-6">
+              <div className="flex gap-6 w-max">
+                {/* Video/Image Cards */}
+                {[
+                  { src: '/ff_grid/saint.mp4', title: 'Saint Laurent', type: 'video' },
+                  { src: '/ff_grid/dior.mp4', title: 'Dior', type: 'video' },
+                  { src: '/ff_grid/lux1.mp4', title: 'Gucci', type: 'video' },
+                  { src: '/ff_grid/cos.mp4', title: 'Cos', type: 'video' },
+                  { src: '/ff_grid/blacksuit.mp4', title: 'BRND', type: 'video' },
+                  { src: '/ff_grid/prada.mp4', title: 'Prada', type: 'video' },
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    className="relative group flex-shrink-0 w-80 h-96 rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    {item.type === 'video' ? (
+                      <video
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      >
+                        <source src={item.src} type="video/mp4" />
+                      </video>
+                    ) : (
+                      <img
+                        src={item.src}
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                    )}
+                    
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+                    
+                    {/* Title */}
+                    <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                      <h3 className="font-sans font-bold text-2xl text-white drop-shadow-lg">{item.title}</h3>
                     </div>
+                    
+                    {/* Hover Border Glow */}
+                    <div className="absolute inset-0 border-2 border-primary/0 group-hover:border-primary/50 rounded-2xl transition-all duration-500" />
                   </div>
-                  
-                  {/* Decorative dots */}
-                  <div className="absolute top-0 right-1/4 w-4 h-4 bg-primary rounded-full shadow-lg"></div>
-                  <div className="absolute bottom-1/4 left-0 w-3 h-3 bg-secondary rounded-full shadow-lg"></div>
-                  <div className="absolute top-1/3 right-0 w-5 h-5 bg-accent rounded-full shadow-lg"></div>
-                </div>
+                ))}
               </div>
+            </div>
+            
+            {/* Scroll Indicator */}
+            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 flex gap-2">
+              <div className="w-2 h-2 rounded-full bg-primary/50"></div>
+              <div className="w-2 h-2 rounded-full bg-primary/30"></div>
+              <div className="w-2 h-2 rounded-full bg-primary/30"></div>
             </div>
           </div>
         </div>
