@@ -4,6 +4,9 @@ import { Work_Sans, Open_Sans } from "next/font/google"
 import "./globals.css"
 import { CartProvider } from "@/contexts/cart-context"
 import { ThemeProvider } from "@/contexts/theme-context"
+import { CookieConsentProvider } from "@/contexts/cookie-consent-context"
+import { CookieConsentBanner } from "@/components/cookie-consent-banner"
+import { CookieSettingsDialog } from "@/components/cookie-settings-dialog"
 
 const workSans = Work_Sans({
   subsets: ["latin"],
@@ -49,7 +52,13 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning>
         <ThemeProvider>
-          <CartProvider>{children}</CartProvider>
+          <CookieConsentProvider>
+            <CartProvider>
+              {children}
+              <CookieConsentBanner />
+              <CookieSettingsDialog />
+            </CartProvider>
+          </CookieConsentProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -1,5 +1,8 @@
+"use client"
+
 import { Sparkles } from "lucide-react"
 import Link from "next/link"
+import { useCookieConsent } from "@/contexts/cookie-consent-context"
 
 const footerLinks = {
   Shop: [
@@ -23,6 +26,8 @@ const footerLinks = {
 }
 
 export function Footer() {
+  const { openSettings } = useCookieConsent()
+
   return (
     <footer className="relative border-t border-border/50 bg-gradient-to-b from-background to-muted/30 overflow-hidden">
       {/* Gradient background effect */}
@@ -93,7 +98,7 @@ export function Footer() {
 
         <div className="border-t border-border/50 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="font-serif text-sm text-muted-foreground mb-4 md:mb-0">
-            © 2024 Flashfits. All rights reserved.
+            © 2025 Flashfits. All rights reserved.
           </p>
           <div className="flex gap-6">
             <Link 
@@ -103,13 +108,13 @@ export function Footer() {
               Accessibility
               <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
             </Link>
-            <Link 
-              href="/cookies" 
+            <button
+              onClick={openSettings}
               className="text-sm text-muted-foreground hover:text-primary transition-all duration-300 relative group"
             >
               Cookie Settings
               <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300" />
-            </Link>
+            </button>
           </div>
         </div>
       </div>

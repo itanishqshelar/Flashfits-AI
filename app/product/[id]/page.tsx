@@ -11,6 +11,8 @@ import { useCart } from "@/contexts/cart-context"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { resolveColor } from "@/lib/utils"
+import { trackProductView } from "@/lib/tracking"
+import { usePageTracking } from "@/lib/hooks/use-page-tracking"
 
 type ProductDetail = {
   id: number
@@ -34,6 +36,7 @@ type ProductDetail = {
 const STANDARD_SIZES = ["XS", "S", "M", "L", "XL"]
 
 export default function ProductDetailPage() {
+  usePageTracking() // Track page views
   const params = useParams()
   const router = useRouter()
   const { dispatch } = useCart()
@@ -79,6 +82,9 @@ export default function ProductDetailPage() {
           setProduct(transformedProduct)
           setSelectedColor(transformedProduct.colors[0])
           setSelectedSize(transformedProduct.sizes[1]) // Default to S
+          
+          // Track product view
+          trackProductView(transformedProduct.dbId || transformedProduct.id.toString(), transformedProduct.name)
         } else {
           // If API fails, create a mock product for demonstration
           const mockProduct: ProductDetail = {
@@ -107,6 +113,9 @@ export default function ProductDetailPage() {
           setProduct(mockProduct)
           setSelectedColor(mockProduct.colors[0])
           setSelectedSize(mockProduct.sizes[1])
+          
+          // Track product view
+          trackProductView(mockProduct.dbId || mockProduct.id.toString(), mockProduct.name)
         }
       } catch (error) {
         console.error("Error fetching product:", error)
