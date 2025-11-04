@@ -19,9 +19,17 @@ export default function LoginPage() {
     setError(null)
     setLoading(true)
     const supabase = supabaseBrowser()
+    
+    // Get the correct redirect URL based on environment
+    const redirectTo = typeof window !== 'undefined' 
+      ? `${window.location.origin}/auth/callback`
+      : undefined
+    
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: typeof window !== 'undefined' ? window.location.origin : undefined },
+      options: { 
+        emailRedirectTo: redirectTo,
+      },
     })
     if (error) setError(error.message)
     else setSent(true)
@@ -30,9 +38,25 @@ export default function LoginPage() {
 
   const signInOAuth = async (provider: 'google' | 'github') => {
     setError(null)
+    setLoading(true)
     const supabase = supabaseBrowser()
-    const { error } = await supabase.auth.signInWithOAuth({ provider })
-    if (error) setError(error.message)
+    
+    // Get the correct redirect URL based on environment
+    const redirectTo = typeof window !== 'undefined' 
+      ? `${window.location.origin}/auth/callback`
+      : undefined
+    
+    const { error } = await supabase.auth.signInWithOAuth({ 
+      provider,
+      options: {
+        redirectTo,
+      },
+    })
+    if (error) {
+      setError(error.message)
+      setLoading(false)
+    }
+    // Don't set loading to false on success - user will be redirected
   }
 
   return (
@@ -82,10 +106,20 @@ export default function LoginPage() {
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <Button variant="outline" onClick={() => signInOAuth('google')} className="w-full bg-transparent">
+                      <Button 
+                        variant="outline" 
+                        onClick={() => signInOAuth('google')} 
+                        disabled={loading}
+                        className="w-full bg-transparent"
+                      >
                         <Chrome className="h-4 w-4 mr-2" /> Google
                       </Button>
-                      <Button variant="outline" onClick={() => signInOAuth('github')} className="w-full bg-transparent">
+                      <Button 
+                        variant="outline" 
+                        onClick={() => signInOAuth('github')} 
+                        disabled={loading}
+                        className="w-full bg-transparent"
+                      >
                         <Github className="h-4 w-4 mr-2" /> GitHub
                       </Button>
                     </div>
