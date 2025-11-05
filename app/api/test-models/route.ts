@@ -1,38 +1,63 @@
-import { GoogleGenerativeAI } from '@google/generative-ai'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
-    if (!process.env.GEMINI_API_KEY) {
-      return NextResponse.json({ error: 'No API key' }, { status: 500 })
+    if (!process.env.OPENROUTER_API_KEY) {
+      return NextResponse.json({ error: 'No OpenRouter API key configured' }, { status: 500 })
     }
 
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
-    
-    // Try a simple generation test with different models (updated with latest stable models)
+    // Test OpenRouter models (free models used in chatbot)
     const testModels = [
-      'gemini-2.5-flash',      // Latest recommended model
-      'gemini-2.5-pro',        // Most capable model  
-      'models/gemini-2.5-flash',
-      'models/gemini-2.5-pro',
-      'gemini-1.5-flash',      // Fallback models
-      'gemini-1.5-pro',
-      'models/gemini-1.5-flash',
-      'models/gemini-1.5-pro'
+      'meta-llama/llama-3-8b-instruct:free',
+      'meta-llama/llama-3.2-3b-instruct:free',
+      'microsoft/phi-3-mini-128k-instruct:free',
+      'mistralai/mistral-7b-instruct:free'
     ]
+    
     const results = []
     
     for (const modelName of testModels) {
       try {
-        const model = genAI.getGenerativeModel({ model: modelName })
-        const result = await model.generateContent('Hello')
-        const response = await result.response
-        const text = response.text()
-        results.push({ 
-          model: modelName, 
-          status: 'success',
-          response: text.substring(0, 50) + '...' 
+        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+            'Content-Type': 'application/json',
+            'HTTP-Referer': process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3001',
+          },
+          body: JSON.stringify({
+            model: modelName,
+            messages: [
+              {
+                role: 'user',
+                content: 'Hello! Respond with just "OK"'
+              }
+            ],
+            max_tokens: 50
+          })
         })
+
+        const data = await response.json()
+        
+        if (data.choices && data.choices[0]?.message?.content) {
+          results.push({ 
+            model: modelName, 
+            status: 'success',
+            response: data.choices[0].message.content
+          })
+        } else if (data.error) {
+          results.push({ 
+            model: modelName, 
+            status: 'failed', 
+            error: data.error.message || JSON.stringify(data.error)
+          })
+        } else {
+          results.push({ 
+            model: modelName, 
+            status: 'failed', 
+            error: 'No response generated'
+          })
+        }
       } catch (err: any) {
         results.push({ 
           model: modelName, 
