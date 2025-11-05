@@ -183,20 +183,20 @@ export default function HomePage() {
             {[
               {
                 quote: "Flashfits completely changed how I shop. The AI recommendations are spot-on!",
-                author: "Sarah M.",
-                role: "Fashion Blogger",
+                author: "Saniya V.",
+                role: "Actress",
                 delay: "0ms",
               },
               {
                 quote: "I discovered styles I never thought I'd love. It's like having a personal stylist.",
-                author: "Alex K.",
+                author: "Arav P.",
                 role: "Creative Director",
                 delay: "200ms",
               },
               {
                 quote: "The trend insights keep me ahead of the curve. Highly recommend!",
-                author: "Jordan L.",
-                role: "Marketing Exec",
+                author: "Kartika T.",
+                role: "Influencer",
                 delay: "400ms",
               },
             ].map((testimonial, index) => (
