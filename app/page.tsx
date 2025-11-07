@@ -189,13 +189,13 @@ export default function HomePage() {
               },
               {
                 quote: "I discovered styles I never thought I'd love. It's like having a personal stylist.",
-                author: "Arav P.",
+                author: "Tom C.",
                 role: "Creative Director",
                 delay: "200ms",
               },
               {
                 quote: "The trend insights keep me ahead of the curve. Highly recommend!",
-                author: "Kartika T.",
+                author: "Brad P.",
                 role: "Influencer",
                 delay: "400ms",
               },

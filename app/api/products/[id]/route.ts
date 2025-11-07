@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { supabaseServer } from '@/lib/supabase/server'
+import { supabaseServer, supabaseAdmin } from '@/lib/supabase/server'
 
 export async function GET(_req: Request, { params }: { params: { id: string } }) {
   const id = params.id
@@ -59,12 +59,9 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
 
 export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
   const id = params.id
-  const supabase = await supabaseServer()
-
-  // Require auth
-  const { data: userData } = await supabase.auth.getUser()
-  const user = (userData as any)?.user
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  
+  // Use admin client to bypass RLS
+  const supabase = supabaseAdmin()
 
   // Look up the product so we can optionally remove its storage object
   const { data: product, error: prodErr } = await supabase

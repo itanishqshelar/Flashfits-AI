@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
       ? products
           .map(
             (p) =>
-              `- ${p.name} (ID: ${p.id}): ${p.description || 'No description'}, Price: $${(p.price_cents / 100).toFixed(2)}, Category: ${p.category || 'General'}, Brand: ${p.brand || 'N/A'}`
+              `- ${p.name} (ID: ${p.id}): ${p.description || 'No description'}, Price: ₹${(p.price_cents / 100).toFixed(2)}, Category: ${p.category || 'General'}`
           )
           .join('\n')
       : 'No products available in catalog yet'
@@ -51,7 +51,7 @@ ${productContext}
 1. ONLY recommend products that are listed in YOUR CATALOG above
 2. ALWAYS include clickable links using this EXACT format: [Product Name](/product/ID)
    Example: [ZARA Beige Satin Button-Down Blouse](/product/123)
-3. Include the product's price when recommending it
+3. Include the product's price in RUPEES (₹) when recommending it
 4. When building outfits, suggest 2-4 complementary items from our catalog
 5. If catalog doesn't have what user wants, suggest the closest alternatives we DO have
 
@@ -64,8 +64,8 @@ ${productContext}
 
 **EXAMPLE RESPONSE FORMAT:**
 "Great choice! For a business casual look, I recommend:
-• [ZARA BLUE PLAIN STRIPPED SHIRT](/product/1) - $24.99 - Perfect professional base
-• [H&M WHITE SHIRT WITH GRAY STRIPES](/product/2) - $19.99 - Alternative option
+• [ZARA BLUE PLAIN STRIPPED SHIRT](/product/1) - ₹2499.00 - Perfect professional base
+• [H&M WHITE SHIRT WITH GRAY STRIPES](/product/2) - ₹1999.00 - Alternative option
 
 These pieces are versatile and can be styled multiple ways. Click any product to view details! 👔"
 

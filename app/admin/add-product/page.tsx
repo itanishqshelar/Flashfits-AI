@@ -31,7 +31,6 @@ export default function AddProductPage() {
     price_cents: '',
     category: '',
     image_url: '',
-    brand: '',
     colors: '',
     sizes: '',
   })
@@ -153,7 +152,6 @@ export default function AddProductPage() {
         price_cents: '',
         category: '',
         image_url: '',
-        brand: '',
         colors: '',
         sizes: '',
       })
@@ -258,17 +256,6 @@ export default function AddProductPage() {
                         required
                       />
                     </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Brand</label>
-                    <Input
-                      type="text"
-                      name="brand"
-                      value={formData.brand}
-                      onChange={handleChange}
-                      placeholder="ZARA"
-                    />
                   </div>
 
                   {/* Image Upload Section */}
@@ -436,11 +423,6 @@ export default function AddProductPage() {
                               <span className="text-sm font-medium">
                                 ${product.price ? product.price.toFixed(2) : ((product.price_cents || 0) / 100).toFixed(2)}
                               </span>
-                              {product.brand && (
-                                <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">
-                                  {product.brand}
-                                </span>
-                              )}
                               <span className="text-xs bg-accent px-2 py-1 rounded">
                                 {product.category}
                               </span>

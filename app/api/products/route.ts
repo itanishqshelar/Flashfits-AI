@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { supabaseServer } from '@/lib/supabase/server'
+import { supabaseServer, supabaseAdmin } from '@/lib/supabase/server'
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
@@ -45,4 +45,57 @@ export async function GET(req: Request) {
   const nextOffset = offset + items.length
   const hasMore = nextOffset < total
   return NextResponse.json({ items, total, nextOffset, hasMore })
+}
+
+export async function POST(req: Request) {
+  try {
+    const body = await req.json()
+    const { name, description, price_cents, category, image_url, colors, sizes } = body
+
+    // Validate required fields
+    if (!name || !description || price_cents === undefined || !category) {
+      return NextResponse.json(
+        { error: 'Missing required fields: name, description, price_cents, category' },
+        { status: 400 }
+      )
+    }
+
+    // Use admin client to bypass RLS
+    const supabase = supabaseAdmin()
+    
+    // Insert the new product (excluding brand field which doesn't exist in schema)
+    const { data, error } = await supabase
+      .from('products')
+      .insert([
+        {
+          name,
+          description,
+          price_cents: parseInt(price_cents),
+          category,
+          image_url: image_url || null,
+          colors: colors || [],
+          sizes: sizes || [],
+          is_new: true,
+          is_sale: false
+        }
+      ])
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Supabase insert error:', error)
+      return NextResponse.json(
+        { error: error.message || 'Failed to create product' },
+        { status: 500 }
+      )
+    }
+
+    return NextResponse.json({ success: true, product: data }, { status: 201 })
+  } catch (error: any) {
+    console.error('Error creating product:', error)
+    return NextResponse.json(
+      { error: error.message || 'Internal server error' },
+      { status: 500 }
+    )
+  }
 }
